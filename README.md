@@ -4,6 +4,11 @@
 - Configure TailwindCSS
 - Header
 - Login Form
+- Sign Up Form
+- Form Validation
+- useRef Hook
+- Firebase Setup
+- Deploying our app to production
 
 # Features
 
@@ -18,3 +23,5 @@
 - NetFlix GPT
   - Search Bar
   - Movie Suggestions
+
+https://netflixgpt-3e6e2.web.app
