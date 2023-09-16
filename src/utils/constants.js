@@ -8,17 +8,9 @@ export const API_OPTIONS = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MjM4YzZiYTYyNDI0ZTE0MjdiOThmNmM4OTRiN2EwYSIsInN1YiI6IjY0NmRjZTA3YzM1MTRjMmIwYTM0NWM5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BgojPRHuOBhypx5p3YABwKHskonAMy570M30EoOrDiM'
+      Authorization: 'Bearer ' + process.env.REACT_APP_KEY
     }
 };
 
 export const URL = 'https://api.themoviedb.org/3/movie/now_playing?page=1'; 
 export const Video_URL = 'https://api.themoviedb.org/3/movie/'; 
-
-/* 
-eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MjM4YzZiYTYyNDI0ZTE0MjdiOThmNmM4OTRiN2EwYSIsInN1YiI6IjY0NmRjZTA3YzM1MTRjMmIwYTM0NWM5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BgojPRHuOBhypx5p3YABwKHskonAMy570M30EoOrDiM
-
-key 
-
-4238c6ba62424e1427b98f6c894b7a0a
-*/
