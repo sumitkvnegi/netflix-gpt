@@ -2,24 +2,91 @@ import React, { useState, useRef } from "react";
 import Header from "./Header";
 import tw from "tailwind-styled-components";
 import { checkValidData } from "../utils/validate";
+import { useDispatch } from "react-redux";
+
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { addUser } from "../utils/userSlice";
+import { BACKGROUND, USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
+  const dispatch = useDispatch();
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
   };
 
   const handleButtonClick = () => {
-    //! validate form details
-    setErrorMessage(
-      checkValidData(email.current.value, password.current.value)
-    );
-    // console.log(email);
-    // console.log(password);
+    // ! validate form details
+    const message = checkValidData(email.current.value, password.current.value);
+    setErrorMessage(message);
+
+    if (message) return;
+
+    // ! create a new user
+    if (!isSignInForm) {
+      // * sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // * Signed in
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: USER_AVATAR,
+          })
+            .then(() => {
+              // * Profile Updated
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+            })
+            .catch((error) => {
+              // * An error occurred
+              setErrorMessage(error);
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + ": " + errorMessage);
+        });
+    } else {
+      // * sign in logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // * Signed in
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + ": " + errorMessage);
+        });
+    }
   };
 
   return (
@@ -27,7 +94,7 @@ const Login = () => {
       <Header />
       <ImageContainer>
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/855ed6e2-d9f1-4afd-90da-96023ec747c3/85eb5b91-25ed-4965-ace9-ba8e4a0ead8d/IN-en-20230828-popsignuptwoweeks-perspective_alpha_website_medium.jpg"
+          src={BACKGROUND}
           alt="background"
         />
       </ImageContainer>
@@ -38,6 +105,7 @@ const Login = () => {
         {!isSignInForm && (
           <Input
             onChange={() => setErrorMessage(null)}
+            ref={name}
             type="text"
             placeholder="Full Name"
           />
