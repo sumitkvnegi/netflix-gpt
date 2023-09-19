@@ -93,10 +93,7 @@ const Login = () => {
     <div className="w-screen">
       <Header />
       <ImageContainer>
-        <img
-          src={BACKGROUND}
-          alt="background"
-        />
+        <img src={BACKGROUND} alt="background" />
       </ImageContainer>
       <Form onSubmit={(e) => e.preventDefault()}>
         <h1 className="text-2xl font-bold tracking-wider mb-2">
